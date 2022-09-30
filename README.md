@@ -1,15 +1,26 @@
-# img2.ico
- This is a batch file that converts images into multiple-res .ICO files. Made possible with ***ImageMagick*** by ImageMagick Studio LLC.
+# img2ico
+
+ This is a batch file that converts .PNG images into multiple-res .ICO files. This is made possible with ***ImageMagick***, by ImageMagick Studio LLC. You can visit [their website](https://imagemagick.org/script/index.php) for more information.
  
 # Disclaimer
- **This currently only works with windows!!!**
+ **img2ico will only run on Windows.**
  
- You will need ImageMagick installed to convert your files. You can download it [here.](https://imagemagick.org/script/download.php)
- 
- This is my first batch file, let alone utility program. I have been informed that the code can be optimized and there are plans for it in the future as well as a GUI. There are plenty of things to do and lots of progress to be made.
+ You will also need ImageMagick installed to convert your files. You can download it at the above link, but img2ico will automatically download it for you and lead you through the installation process.
 
-## How to use
- 1. Run `img2ico.bat` in the img2.ico folder.
- 2. Specify a folder of .PNG files to convert to .ICO.
- 3. Wait for images to convert.
- 4. An "Icons" folder will be added to the image folder with your .ico files.
+ This is meant as a utility tool for use primarily by the developers, but is made open-source and public for use of anyone.
+
+ You can view the license for use of ImageMagick at [this link.](https://imagemagick.org/script/license.php)
+
+## Usage
+ 1. Download the `img2ico.EXE` file located at the repository root. This executable only contains the code located in the `img2.ico` directory, also in this repository.
+ 2. When prompted, specify the folder you wish to convert the .PNG files of to .ICO.
+ 3. Wait for the images to convert. If an error occurs, ensure your folder was specified correctly.
+ 4. An "Icons" directory containing your converted images will be made in the folder you specified.
+
+ ## Changelog
+
+ ### Beta 0.2.0
+
+ - Fixed an issue regarding file names including spaces not properly converting.
+ - Added error handler if conversion fails.
+ - Optimized code for performance.
