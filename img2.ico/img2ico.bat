@@ -1,57 +1,65 @@
 @echo off
 setlocal enabledelayedexpansion
 
-echo Please choose a folder containing your icons.
+rem This batch file is a rewrite of nutmeg's img2.ico PNG to ICO converter using imagemagick. Minus optimizations, credit goes to him.
+rem Yes, I do know the funny man himself.
 
-:GETFOLDER
+:checkmagick
+where magick >nul 2>nul
+if %errorlevel% neq 0 (
+	choice /m "ImageMagick, which %~n0 requires to run, either isn't installed or isn't in PATH. Install now?"
+	if %errorlevel% equ 1 goto (getmagick) else (
+		echo %~n0 cannot run without ImageMagick. Please download and install it, then rerun.
+		timeout 10
+	)
+) else (goto getfolder)
+
+:getmagick
+if exist "C:\Program Files" (
+	powershell -command invoke-webrequest -uri https://imagemagick.org/archive/binaries/ImageMagick-7.1.0-49-Q16-HDRI-x64-dll.exe -outfile $env:TEMP\magickinstall.exe
+	%temp%\magickinstall.exe
+	echo Keep %~n0 OPEN while installing ImageMagick. When finished, press any key.
+	pause >nul
+) else (
+	powershell -command invoke-webrequest -uri https://imagemagick.org/archive/binaries/ImageMagick-7.1.0-49-Q16-HDRI-x86-dll.exe -outfile $env:TEMP\magickinstall.exe
+	%temp%\magickinstall.exe
+	echo Keep %~n0 OPEN while installing ImageMagick. When finished, press any key.
+	pause >nul
+)
+goto checkmagick
+
+:getfolder
 for /F "tokens=* usebackq" %%a in (`powershell -executionpolicy bypass -file openfiledialog.ps1`) do if not "%%a" == "Cancel" if not "%%a" == "OK" set folder=%%a
-if "%folder%" == "" (call:NOTFOUND) else (call:MAKEICONS)
+if "%folder%" == "" (goto notfound) else (echo Found the folder!)
 
-:MAKEICONS
-echo Found folder!
-call :PROMPT
-exit /b
+:prompt
+choice /m "Are you sure you want to convert EVERY .PNG file in this folder? This cannot be undone."
+if %errorlevel% equ 1 (goto :eof) else (goto create)
 
-:PROMPT
-choice /m "Are you sure you want to convert EVERY .PNG in this folder?"
-IF "%ERRORLEVEL%" NEQ "1" (call :EXIT) else (call :CREATE)
-
-:NOTFOUND
-echo Could not get folder! Please try again...
-pause
-GOTO GETFOLDER
-
-:CREATE
+:checkfiles
 if not exist "%folder%"\Icons (
-    echo Making icon directory in "%folder%"
-    md "%folder%"\Icons
-    GOTO :CHECKFORFILE
-)
-
-:CHECKFORFILE
-if not exist "%folder%"\Icons (
-    TIMEOUT /T 1 >nul
-    GOTO CHECKFORFILE
+	echo Didn't find Icons folder!
+	timeout /t 1 >nul
+	goto create
 ) else (
-    set icondir="%folder%"\Icons
-    echo Icon directory found!
-    GOTO :FILEFOUND
+	echo Found Icon folder!
+	set icondir="%folder%"\Icons
+	goto foundfile
 )
+	
+:create
+echo Making icon directory within "%folder%".
+md "%folder%"\Icons
+goto checkfiles
 
-:FILEFOUND
-WHERE magick >nul 2>nul
-if %ERRORLEVEL% NEQ 0 (
-    echo ImageMagick is not installed! Please install it and try again.
-    pause
-) else (
-    for %%f in ("%folder%\"*.png) do (call :CONVERTFILE "%%f")
-    echo All files converted!
-    pause
-    EXIT
-)
+:foundfile
+for %%f in ("%folder%\"*.png) do (call :convertfile "%%f")
+echo Successfully converted all files! Thank you for using %~n0! Press any key to exit.
+pause >nul
+goto :eof
 
-:CONVERTFILE
+:convertfile
 set filedir="%~d1%~1"
 set filedir=!filedir:~1,-1!
-magick "convert !filedir!" -define icon:auto-resize=256,128,64,48,32,16 -interpolate nearest-neighbor -filter point %icondir%\%~n1.ico >nul
+magick "convert !filedir!" -define icon:auto-resize=256,128,64,48,32,16 -interpolate Nearest -filter point %icondir%\%~n1.ico >nul
 echo Converted %~n1.ico successfully!
