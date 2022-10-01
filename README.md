@@ -29,6 +29,7 @@
 ### Beta v0.3.0
 
 - Added ability to choose between PNG, JPG, and SVG files. Note that only JPG will work currently, *NOT* JPEG. This will be worked on soon.
+- Added ability to convert singular files rather than only in bulk.
 
 ## Previous versions
 
