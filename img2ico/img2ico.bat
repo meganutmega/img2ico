@@ -120,7 +120,7 @@ goto :eof
 set filedir=%~d1%~1
 set filedir=%filedir:~2%
 set filedir="%filedir%"
-magick convert %filedir% -define icon:auto-resize=256,128,64,48,32,16 -interpolate Nearest -filter point "%~2"\\"%~n1".ico >nul
+magick convert %filedir% -define icon:auto-resize=256,180,128,96,72,64,48,32,24,16 -interpolate Nearest -filter point "%~2"\\"%~n1".ico >nul
 if %errorlevel% equ 1 (
 	echo Something went wrong when trying to convert. Please double-check your files, and run %~n0 again.
 	pause
