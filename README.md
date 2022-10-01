@@ -16,11 +16,23 @@
  You can view the license for use of ImageMagick at [this link.](https://imagemagick.org/script/license.php)
 
 # Usage
- 1. Download the `img2ico.EXE` file located at the repository root. This executable only contains the code located in the `img2ico` directory, also in this repository.
- 2. When prompted, specify the folder you wish to convert the files of to .ICO.
- 3. Specify the file type you wish to convert from; PNG, JPG (*specifically* JPG), or SVG.
- 4. Wait for the images to convert. If an error occurs, ensure your folder was specified correctly.
- 5. An "Icons" directory containing your converted images will be made in the folder you specified.
+
+Download the `img2ico.EXE` file located at the repository root. This executable only contains the code located in the `img2ico` directory, also in this repository.
+
+You'll be prompted on if you want to convert a single file, or if you want to convert in bulk. Then, depending on your selection;
+
+## Bulk
+
+- Specify the folder your images are in.
+- Specify the file type you wish to convert from; PNG, JPG (*specifically* JPG), or SVG. This is useful if you have multiple image types that you don't want converted.
+- Wait for the images to convert. If an error occurs, ensure your folder was specified correctly and that your file isn't corrupt.
+- An "Icons" directory containing your converted images will be made in the folder you specified.
+
+## Single
+
+- Specify the file you wish to convert.
+- Wait for your file to convert. Should an error occur, check that your location is right and that your file isn't corrupt.
+- The converted .ICO file should be in the same folder as the original.
 
 # Changelog
 
