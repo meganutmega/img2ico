@@ -4,7 +4,7 @@
 
 ---
 
- This is a batch file that converts .PNG images into multiple-res .ICO files. This is made possible with ***ImageMagick***, by ImageMagick Studio LLC. You can visit [their website](https://imagemagick.org/script/index.php) for more information.
+ This is a batch file that converts images into multiple-res .ICO files. This is made possible with ***ImageMagick***, by ImageMagick Studio LLC. You can visit [their website](https://imagemagick.org/script/index.php) for more information.
  
 # Disclaimer
  **img2ico will only run on Windows.**
@@ -15,15 +15,24 @@
 
  You can view the license for use of ImageMagick at [this link.](https://imagemagick.org/script/license.php)
 
-## Usage
- 1. Download the `img2ico.EXE` file located at the repository root. This executable only contains the code located in the `img2.ico` directory, also in this repository.
- 2. When prompted, specify the folder you wish to convert the .PNG files of to .ICO.
- 3. Wait for the images to convert. If an error occurs, ensure your folder was specified correctly.
- 4. An "Icons" directory containing your converted images will be made in the folder you specified.
+# Usage
+ 1. Download the `img2ico.EXE` file located at the repository root. This executable only contains the code located in the `img2ico` directory, also in this repository.
+ 2. When prompted, specify the folder you wish to convert the files of to .ICO.
+ 3. Specify the file type you wish to convert from; PNG, JPG (*specifically* JPG), or SVG.
+ 4. Wait for the images to convert. If an error occurs, ensure your folder was specified correctly.
+ 5. An "Icons" directory containing your converted images will be made in the folder you specified.
 
- ## Changelog
+# Changelog
 
- ### Beta 0.2.0
+## Current Version
+
+### Beta v0.3.0
+
+- Added ability to choose between PNG, JPG, and SVG files. Note that only JPG will work currently, *NOT* JPEG. This will be worked on soon.
+
+## Previous versions
+
+### Beta v0.2.0
 
  - Fixed an issue regarding file names including spaces not properly converting.
  - Added error handler if conversion fails.
