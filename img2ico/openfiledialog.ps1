@@ -1,12 +1,13 @@
 [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms")|Out-Null
 
-$foldername = New-Object System.Windows.Forms.FolderBrowserDialog
-$foldername.Description = "Select a folder"
-$foldername.rootfolder = "MyComputer"
-$foldername.SelectedPath = $PSScriptRoot
+$Path
+$OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+$OpenFileDialog.InitialDirectory = $PSScriptRoot
+$OpenFileDialog.filter = "Image Files(*.PNG;*.JPG;*.SVG)|*.PNG;*.JPG;*.SVG"
+$OpenFileDialog.FileName
 
-if($foldername.ShowDialog() -eq "OK")
+if($OpenFileDialog.ShowDialog() -eq "OK")
 {
-    $folder += $foldername.SelectedPath
+    $Path = $OpenFileDialog.FileName
 }
-return $folder
+return $Path

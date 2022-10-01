@@ -9,7 +9,7 @@ if %errorlevel% neq 0 (
 		echo %~n0 cannot run without ImageMagick. Please download and install it, then rerun.
 		timeout 10
 	)
-) else (goto getfolder)
+) else (goto choosemode)
 
 :getmagick
 if exist "C:\Program Files" (
@@ -25,13 +25,33 @@ if exist "C:\Program Files" (
 )
 exit /b
 
+:choosemode
+choice /c sb /m "Would you like to convert a single image, or a whole folder in bulk? [S]INGLE, [B]ULK"
+if %errorlevel% equ 1 (
+	goto getfile
+)
+if %errorlevel% equ 2 (
+	goto getfolder
+)
+
+:getfile
+for /F "tokens=* usebackq" %%a in (`powershell -executionpolicy bypass -file openfiledialog.ps1`) do if not "%%a" == "Cancel" if not "%%a" == "OK" set file=%%a
+if "%file%" == "" (
+	echo Failed to find file! Please try again.
+	goto getfile
+) else (
+	echo File found.
+	goto promptsingle
+)
+
 :getfolder
-for /F "tokens=* usebackq" %%a in (`powershell -executionpolicy bypass -file openfiledialog.ps1`) do if not "%%a" == "Cancel" if not "%%a" == "OK" set folder=%%a
+for /F "tokens=* usebackq" %%a in (`powershell -executionpolicy bypass -file openfolderdialog.ps1`) do if not "%%a" == "Cancel" if not "%%a" == "OK" set folder=%%a
 if "%folder%" == "" (
 	echo Failed to find folder! Please try again.
 	goto getfolder
 ) else (
 	echo Found your folder.
+	goto getext
 )
 
 :getext
@@ -45,30 +65,54 @@ if %errorlevel% equ 2 (
 if %errorlevel% equ 3 (
 	set fileext="svg"
 )
+goto promptbulk
 
-:prompt
+:promptbulk
 choice /m "Are you ready to convert these files? It'll be in an Icons folder where you specified."
-if %errorlevel% equ 2 (goto :eof) else (goto create)
+if %errorlevel% equ 2 (goto choosemode) else (goto createbulk)
 
-:checkfiles
+:promptsingle
+choice /m "Are you ready to convert this file? It'll be in the same folder as the original file."
+if %errorlevel% equ 2 (goto choosemode) else (goto createsingle)
+
+:checkfilesinfolder
 if not exist "%folder%\Icons" (
 	echo Didn't find Icons folder!
 	timeout /t 1 >nul
-	goto create
+	goto createbulk
 ) else (
 	echo Found Icon folder!
 	set icondir="%folder%\Icons"
-	goto foundfile
+	goto foundfiles
 )
 	
-:create
+:createbulk
 echo Making icon directory within "%folder%".
 md "%folder%\Icons"
-goto checkfiles
+goto checkfilesinfolder
 
-:foundfile
-for %%f in ("%folder%\"*.%fileext%) do (call :convertfile "%%f")
-echo Successfully converted all files! Thank you for using %~n0! Press any key to exit.
+:createsingle
+echo Creating icon file...
+set absolutefiledir=%file%\\..
+set absolutefiledir="%absolutefiledir%"
+call :convertfile "%file%" %absolutefiledir%
+goto finished
+
+:finished
+choice /c ce /m "[C]onvert more files, or [e]xit?"
+if %errorlevel% equ 1 (
+	goto choosemode
+)
+if %errorlevel% equ 2 (
+	goto thankyouprompt
+)
+
+:foundfiles
+for %%f in ("%folder%\"*.%fileext%) do (call :convertfile "%%f" %icondir%)
+goto finished
+
+:thankyouprompt
+echo Successfully converted all files. Thank you for using %~n0^^! Press any key to exit.
 pause >nul
 goto :eof
 
@@ -76,7 +120,7 @@ goto :eof
 set filedir=%~d1%~1
 set filedir=%filedir:~2%
 set filedir="%filedir%"
-magick convert %filedir% -define icon:auto-resize=256,128,64,48,32,16 -interpolate Nearest -filter point %icondir%\\"%~n1".ico >nul
+magick convert %filedir% -define icon:auto-resize=256,128,64,48,32,16 -interpolate Nearest -filter point "%~2"\\"%~n1".ico >nul
 if %errorlevel% equ 1 (
 	echo Something went wrong when trying to convert. Please double-check your files, and run %~n0 again.
 	pause
