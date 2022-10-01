@@ -30,10 +30,24 @@ for /F "tokens=* usebackq" %%a in (`powershell -executionpolicy bypass -file ope
 if "%folder%" == "" (
 	echo Failed to find folder! Please try again.
 	goto getfolder
-) else (echo Found the folder!)
+) else (
+	echo Found your folder.
+)
+
+:getext
+choice /c pjs /m "What file type do you want to convert from? [P]NG, [J]PG, [S]VG"
+if %errorlevel% equ 1 (
+	set fileext="png"
+)
+if %errorlevel% equ 2 (
+	set fileext="jpg"
+)
+if %errorlevel% equ 3 (
+	set fileext="svg"
+)
 
 :prompt
-choice /m "Are you sure you want to convert EVERY .PNG file in this folder?"
+choice /m "Are you ready to convert these files? It'll be in an Icons folder where you specified."
 if %errorlevel% equ 2 (goto :eof) else (goto create)
 
 :checkfiles
@@ -53,7 +67,7 @@ md "%folder%\Icons"
 goto checkfiles
 
 :foundfile
-for %%f in ("%folder%\"*.png) do (call :convertfile "%%f")
+for %%f in ("%folder%\"*.%fileext%) do (call :convertfile "%%f")
 echo Successfully converted all files! Thank you for using %~n0! Press any key to exit.
 pause >nul
 goto :eof
