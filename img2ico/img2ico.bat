@@ -55,7 +55,7 @@ if "%folder%" == "" (
 )
 
 :getext
-choice /c pjs /m "What file type do you want to convert from? [P]NG, [J]PG, [S]VG"
+choice /c pjsb /m "What file type do you want to convert from? [P]NG, [J]PG, [S]VG"
 if %errorlevel% equ 1 (
 	set fileext="png"
 )
@@ -64,6 +64,9 @@ if %errorlevel% equ 2 (
 )
 if %errorlevel% equ 3 (
 	set fileext="svg"
+)
+if %errorlevel% equ 4 (
+	set fileext="bmp"
 )
 goto promptbulk
 

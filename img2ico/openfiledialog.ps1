@@ -3,7 +3,7 @@
 $Path
 $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
 $OpenFileDialog.InitialDirectory = $PSScriptRoot
-$OpenFileDialog.filter = "Image Files(*.PNG;*.JPG;*.SVG)|*.PNG;*.JPG;*.SVG"
+$OpenFileDialog.filter = "Image Files(*.PNG;*.JPG;*.SVG;*.BMP)|*.PNG;*.JPG;*.SVG;*.BMP"
 $OpenFileDialog.FileName
 
 if($OpenFileDialog.ShowDialog() -eq "OK")
