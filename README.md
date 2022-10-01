@@ -17,7 +17,7 @@
 
 # Usage
 
-Download the `img2ico.EXE` file located at the repository root. This executable only contains the code located in the `img2ico` directory, also in this repository.
+Download the file labeled "Source code (.zip)" located at the [releases page](https://github.com/meganutmega/img2ico/releases/). Then, using an archive program such as [WinRAR](https://www.win-rar.com/download.html?&L=0) or [7-Zip](https://www.7-zip.org/download.html), *extract* the files to a folder. Run the `img2ico.EXE` contained in there, and you're on your way!
 
 You'll be prompted on if you want to convert a single file, or if you want to convert in bulk. Then, depending on your selection;
 
@@ -33,6 +33,16 @@ You'll be prompted on if you want to convert a single file, or if you want to co
 - Specify the file you wish to convert.
 - Wait for your file to convert. Should an error occur, check that your location is right and that your file isn't corrupt.
 - The converted .ICO file should be in the same folder as the original.
+
+# FAQs
+
+<sup>More FAQs may be placed here if questions/concerns become common enough to warrant it, so keep an eye out!</sup>
+
+### `Help! It won't let me run the .EXE!`
+
+If the executable file refuses to run or otherwise errors, first and foremost, push an issue to us for us to look into it. Then, either attempt re-downloading and/or re-extracting the files. 
+
+If all else fails, running the batch file directly within the `img2ico` folder should work perfectly fine.
 
 # Changelog
 
