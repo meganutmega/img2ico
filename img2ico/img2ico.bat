@@ -8,6 +8,7 @@ if %errorlevel% neq 0 (
 	if %errorlevel% equ 1 (goto getmagick) else (
 		echo %~n0 cannot run without ImageMagick. Please download and install it, then rerun.
 		timeout 10
+		exit /b
 	)
 ) else (goto choosemode)
 
@@ -40,17 +41,15 @@ if "%file%" == "" (
 	echo Failed to find file! Please try again.
 	goto getfile
 ) else (
-	echo File found.
 	goto promptsingle
 )
 
 :getfolder
 for /F "tokens=* usebackq" %%a in (`powershell -executionpolicy bypass -file openfolderdialog.ps1`) do if not "%%a" == "Cancel" if not "%%a" == "OK" set folder=%%a
 if "%folder%" == "" (
-	echo Failed to find folder! Please try again.
+	echo Failed to find folder^^! Please try again.
 	goto getfolder
 ) else (
-	echo Found your folder.
 	goto getext
 )
 
@@ -80,11 +79,11 @@ if %errorlevel% equ 2 (goto choosemode) else (goto createsingle)
 
 :checkfilesinfolder
 if not exist "%folder%\Icons" (
-	echo Didn't find Icons folder!
+	echo Didn't find Icons folder^^!
 	timeout /t 1 >nul
 	goto createbulk
 ) else (
-	echo Found Icon folder!
+	echo Found Icon folder^^!
 	set icondir="%folder%\Icons"
 	goto foundfiles
 )
@@ -121,8 +120,7 @@ goto :eof
 
 :convertfile
 set filedir=%~d1%~1
-set filedir=%filedir:~2%
-set filedir="%filedir%"
+set filedir="%filedir:~2%"
 magick convert %filedir% -define icon:auto-resize=256,180,128,96,72,64,48,32,24,16 -interpolate Nearest -filter point "%~2"\\"%~n1".ico >nul
 if %errorlevel% equ 1 (
 	echo Something went wrong when trying to convert. Please double-check your files, and run %~n0 again.
